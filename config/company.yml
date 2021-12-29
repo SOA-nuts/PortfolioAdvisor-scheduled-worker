@@ -1,0 +1,6 @@
+---
+- apple:     AAPL
+  microsoft: MSFT     
+  google:    GOOGL 
+  amazon:    AMZN
+  meta:      META 

@@ -6,13 +6,13 @@ task :console do
 end
 
 USERNAME = 'soumyaray'
-IMAGE = 'codepraise-clone_report_worker'
+IMAGE = 'portfolio-add_report_worker'
 VERSION = '0.1.0'
 
 desc 'Build Docker image'
 task :worker do
   require_relative './init'
-  CodePraise::CloneReportWorker.new.call
+  PortfolioAdvisor::AddTargetWorker.new.call
 end
 
 # Docker tasks
@@ -70,7 +70,7 @@ namespace :queue do
   task :config do
     require_relative 'config/environment.rb' # load config info
     require 'aws-sdk-sqs'
-    @worker = CodePraise::CloneReportWorker
+    @worker = PortfolioAdvisor::AddTargetWorker
     @config = @worker.config
 
     @sqs = Aws::SQS::Client.new(
@@ -83,11 +83,11 @@ namespace :queue do
   desc 'Create SQS queue for Shoryuken'
   task :create => :config do
     puts "Environment: #{ENV['WORKER_ENV'] || 'development'}"
-    @sqs.create_queue(queue_name: @config.REPORT_QUEUE)
+    @sqs.create_queue(queue_name: @config.ADD_QUEUE)
 
-    q_url = @sqs.get_queue_url(queue_name: @config.REPORT_QUEUE).queue_url
+    q_url = @sqs.get_queue_url(queue_name: @config.ADD_QUEUE).queue_url
     puts 'Queue created:'
-    puts "  Name: #{@config.REPORT_QUEUE}"
+    puts "  Name: #{@config.ADD_QUEUE}"
     puts "  Region: #{@config.AWS_REGION}"
     puts "  URL: #{q_url}"
   rescue StandardError => error
@@ -97,7 +97,7 @@ namespace :queue do
 
   desc 'Purge messages in SQS queue for Shoryuken'
   task :purge => :config do
-    q_url = @sqs.get_queue_url(queue_name: @config.REPORT_QUEUE).queue_url
+    q_url = @sqs.get_queue_url(queue_name: @config.ADD_QUEUE).queue_url
     @sqs.purge_queue(queue_url: q_url)
     puts "Queue #{queue_name} purged"
   rescue StandardError => error
