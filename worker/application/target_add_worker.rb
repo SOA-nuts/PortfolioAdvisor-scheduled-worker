@@ -18,13 +18,14 @@ module PortfolioAdvisor
       # POST /target/
       COMPANY_LIST[0].each do |index, target|
         #target_request = Forms::NewTarget.new.call(index)
+        puts "#{index} start"
         target_add = Service::AddTarget.new.call(index)
-        puts target_add
         if target_add.failure?
-            puts "target add error"
+            puts "#{index} add error"
         else
-            puts "target_add success"
+            puts "#{index} success"
         end
+        sleep(5)
       end
     end
   end
