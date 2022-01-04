@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-%w[config worker].each do |folder|
+%w[domain infrastructure representers application].each do |folder|
   require_relative "#{folder}/init"
 end

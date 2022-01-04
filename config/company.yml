@@ -1,14 +1,13 @@
 ---
-- apple:     AAPL
+- google:    GOOGL
+  apple:     AAPL
   microsoft: MSFT     
-  google:    GOOGL 
   amazon:    AMZN
   tesla:     TSLA
   walmart:   WMT
   netflix:   NFLX
   adobe:     ADBE
   nike:      NKE
-  cisco:     CSCO
   paypal:    PYPL
   qualcomm:  QCOM
   

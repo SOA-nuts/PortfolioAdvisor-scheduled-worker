@@ -20,7 +20,7 @@ module PortfolioAdvisor
       collection :articles, extend: Representer::Article, class: OpenStruct
 
       link :self do
-        "#{App.config.API_HOST}/api/v1/history/#{company_name}"
+        "#{AddTargetWorker.config.API_HOST}/api/v1/history/#{company_name}"
       end
 
       def company_name

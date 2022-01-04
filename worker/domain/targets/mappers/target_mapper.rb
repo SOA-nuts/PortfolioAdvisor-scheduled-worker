@@ -14,8 +14,8 @@ module PortfolioAdvisor
         @gateway = @gateway_class.new(@token)
       end
 
-      def find(company, company_symbol)
-        data = @gateway.article(company)
+      def find(company, company_symbol, updated_at)
+        data = @gateway.article(company, updated_at)
         build_entity(company, data['articles'], company_symbol)
       end
 
@@ -28,7 +28,7 @@ module PortfolioAdvisor
         def initialize(company, data, company_symbol)
           @company_name = company
           @articles = ArticleMapper.new.load_several(data)
-          @finance_data = PortfolioAdvisor::YahooFinance::FinanceMapper.new(App.config.YAHOO_TOKEN).find(company_symbol)
+          @finance_data = PortfolioAdvisor::YahooFinance::FinanceMapper.new(AddTargetWorker.config.YAHOO_TOKEN).find(company_symbol)
         end
 
         def build_entity
