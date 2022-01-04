@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../../init.rb'
+require_relative '../../../init.rb'
 require 'aws-sdk-sqs'
 require 'yaml'
 
@@ -12,6 +12,9 @@ module PortfolioAdvisor
   class AddTargetWorker
     def initialize
       @config = AddTargetWorker.config
+      @queue = CodePraise::Messaging::Queue.new(
+        @config.REPORT_QUEUE_URL, @config
+      )
     end
 
     def call
@@ -25,8 +28,15 @@ module PortfolioAdvisor
         else
             puts "#{index} success"
         end
-        sleep(5)
+        sleep(15)
       end
+      # @queue.poll do |clone_request_json|
+      #   clone_request = Representer::CloneRequest
+      #     .new(OpenStruct.new)
+      #     .from_json(clone_request_json)
+      #   @cloned_projects[clone_request.project.origin_id] = clone_request.project
+      #   print '.'
+      # end
     end
   end
 end
