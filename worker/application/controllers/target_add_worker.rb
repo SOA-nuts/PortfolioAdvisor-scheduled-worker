@@ -17,18 +17,35 @@ module PortfolioAdvisor
     end
 
     def call
-      # POST /target/
-      updateTarget
+      puts "update target start"
+      #updateTarget
+      puts "update rank start"
+      @search_targets = Hash.new
 
-      # @queue.poll do |clone_request_json|
-      #   clone_request = Representer::CloneRequest
-      #     .new(OpenStruct.new)
-      #     .from_json(clone_request_json)
-      #   @cloned_projects[clone_request.project.origin_id] = clone_request.project
-      #   print '.'
-      # end
+      @queue.poll do |search_request_json|
+        search_request = Representer::SearchRequest
+          .new(OpenStruct.new)
+          .from_json(search_request_json)
+
+        ranking(search_request)
+      end
+
+      unless @search_targets.empty?
+        popular = Service::Ranking.new.call(search_targets: @search_targets)
+        puts popular
+      end
     end
+
     
+    def ranking(search_request)
+      target = search_request.company_name
+      if @search_targets.member?(target)
+        @search_targets[target] += 1
+      else
+        @search_targets.store(target, 1)
+      end
+    end
+
     def updateTarget
       COMPANY_LIST[0].each do |index, target|
         #target_request = Forms::NewTarget.new.call(index)
@@ -39,9 +56,10 @@ module PortfolioAdvisor
         else
             puts "#{index} success"
         end
-      rescue StandardError
-        updateTarget
       end
+    rescue StandardError
+      updateTarget
     end
+
   end
 end
