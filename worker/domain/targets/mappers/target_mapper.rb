@@ -23,8 +23,8 @@ module PortfolioAdvisor
         DataMapper.new(company, data, company_symbol).build_entity
       end
 
-      # Extracts entity specific elements from data structure
-      class DataMapper
+       # Extracts entity specific elements from data structure
+       class DataMapper
         def initialize(company, data, company_symbol)
           @company_name = company
           @articles = ArticleMapper.new.load_several(data)
@@ -35,15 +35,21 @@ module PortfolioAdvisor
           @article_score = article_score
           @bench_price = bench_price
           @grow_score = grow_score
+          @long_advice_price = advice_price(0.02, 0.18)
+          @mid_advice_price = advice_price(0.1, 0.1)
+          @short_advice_price = advice_price(0.18, 0.2)
 
           PortfolioAdvisor::Entity::Target.new(
             company_name: company_name,
             updated_at: Date.today,
             articles: articles,
             market_price: market_price,
-            long_advice_price: advice_price(0.02, 0.18),
-            mid_advice_price: advice_price(0.1, 0.1),
-            short_advice_price: advice_price(0.18, 0.2)
+            long_advice_price: @long_advice_price,
+            mid_advice_price: @mid_advice_price,
+            short_advice_price: @short_advice_price,
+            long_term_advice: advice(@long_advice_price),
+            mid_term_advice: advice(@mid_advice_price),
+            short_term_advice: advice(@short_advice_price)
           )
         end
 
@@ -67,6 +73,21 @@ module PortfolioAdvisor
 
         def advice_price(article_weight, grow_weight)
           @bench_price * (1 + (@article_score * article_weight) + (@grow_score * grow_weight))
+        end
+
+        def advice(advice_price)
+          percent =  market_price / advice_price
+          if percent < 0.85
+            'excellent'
+          elsif percent < 0.95
+            'good'
+          elsif percent < 1.05
+            'fair'
+          elsif percent < 1.15
+            'poor'
+          else
+            'bad'
+          end
         end
       end
     end

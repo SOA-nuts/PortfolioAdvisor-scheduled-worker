@@ -5,8 +5,8 @@ task :console do
   sh 'pry -r ./init.rb'
 end
 
-USERNAME = 'soumyaray'
-IMAGE = 'portfolio-add_report_worker'
+USERNAME = 'nuts'
+IMAGE = 'portfolio-update_target_worker'
 VERSION = '0.1.0'
 
 desc 'Build Docker image'

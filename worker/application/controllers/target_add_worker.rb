@@ -18,7 +18,7 @@ module PortfolioAdvisor
 
     def call
       puts "update target start"
-      #updateTarget
+      updateTarget
       puts "update rank start"
       @search_targets = Hash.new
 

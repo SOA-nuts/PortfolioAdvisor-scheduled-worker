@@ -40,7 +40,7 @@ gem 'sequel', '~> 5.49'
 gem 'concurrent-ruby', '~> 1.1'
 
 group :development, :test do
-  gem 'sqlite3', '~> 1.4'
+  gem 'sqlite3', git: "https://github.com/larskanis/sqlite3-ruby", branch: "add-gemspec"
 end
 
 group :production do

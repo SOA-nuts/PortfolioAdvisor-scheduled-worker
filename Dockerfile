@@ -4,7 +4,9 @@ WORKDIR /worker
 
 COPY / .
 
-RUN bundle install
+RUN apk add libpq-dev
+
+RUN bundle install --without development test
 
 CMD rake worker
 
