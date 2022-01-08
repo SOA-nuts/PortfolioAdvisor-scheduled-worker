@@ -55,9 +55,9 @@ module PortfolioAdvisor
 
         def score
           #for debug
-          # puts url
-          # puts title
-          # puts "..."
+          puts url
+          puts title
+          puts "..."
           @content_mapper.crawl_content.score
         end
 

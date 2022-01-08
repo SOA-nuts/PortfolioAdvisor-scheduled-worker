@@ -35,9 +35,9 @@ module PortfolioAdvisor
           @article_score = article_score
           @bench_price = bench_price
           @grow_score = grow_score
-          @long_advice_price = advice_price(0.3, 0.8)
-          @mid_advice_price = advice_price(1.2, 0.4)
-          @short_advice_price = advice_price(1.6, 0.2)
+          @long_advice_price = advice_price(1, 0.8)
+          @mid_advice_price = advice_price(2.5, 0.5)
+          @short_advice_price = advice_price(4, 0.2)
 
           PortfolioAdvisor::Entity::Target.new(
             company_name: company_name,
@@ -72,22 +72,30 @@ module PortfolioAdvisor
         end
 
         def advice_price(article_weight, grow_weight)
-          @bench_price * (0.8 + (@article_score * article_weight) + (@grow_score * grow_weight))
+          @bench_price * (0.7 + (@article_score * article_weight) + (@grow_score * grow_weight))
         end
 
         def advice(advice_price)
+          puts @company_name
+          puts "advice_price + #{advice_price.to_s}"
+          puts "market_price + #{market_price.to_s}"
           percent =  market_price / advice_price
+          result = "bad"
           if percent < 0.85
-            'excellent'
+            result = 'excellent'
           elsif percent < 0.95
-            'good'
+            result = 'good'
           elsif percent < 1.05
-            'fair'
+            result = 'fair'
           elsif percent < 1.15
-            'poor'
+            result = 'poor'
           else
-            'bad'
+            result = 'bad'
           end
+          puts percent
+          puts result
+          puts "..."
+          result
         end
       end
     end

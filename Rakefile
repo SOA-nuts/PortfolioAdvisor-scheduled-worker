@@ -7,7 +7,7 @@ end
 
 USERNAME = 'nuts'
 IMAGE = 'portfolio-update_target_worker'
-VERSION = '0.1.0'
+VERSION = '0.0.0'
 
 desc 'Build Docker image'
 task :worker do
