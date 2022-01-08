@@ -57,7 +57,8 @@ module PortfolioAdvisor
             puts "#{index} success"
         end
       end
-    rescue StandardError
+    rescue StandardError => error
+      puts [error.inspect, error.backtrace].flatten.join("\n")
       updateTarget
     end
 

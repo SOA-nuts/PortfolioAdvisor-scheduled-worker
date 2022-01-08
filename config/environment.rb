@@ -23,7 +23,6 @@ module PortfolioAdvisor
     end
 
     # Database Setup
-    puts config.DB_FILENAME
     DB = Sequel.connect(ENV['DATABASE_URL'])
     # deliberately :reek:UncommunicativeMethodName calling method DB
     def self.DB() = DB # rubocop:disable Naming/MethodName

@@ -35,9 +35,9 @@ module PortfolioAdvisor
           @article_score = article_score
           @bench_price = bench_price
           @grow_score = grow_score
-          @long_advice_price = advice_price(0.02, 0.18)
-          @mid_advice_price = advice_price(0.1, 0.1)
-          @short_advice_price = advice_price(0.18, 0.2)
+          @long_advice_price = advice_price(0.3, 0.8)
+          @mid_advice_price = advice_price(1.2, 0.4)
+          @short_advice_price = advice_price(1.6, 0.2)
 
           PortfolioAdvisor::Entity::Target.new(
             company_name: company_name,
@@ -72,7 +72,7 @@ module PortfolioAdvisor
         end
 
         def advice_price(article_weight, grow_weight)
-          @bench_price * (1 + (@article_score * article_weight) + (@grow_score * grow_weight))
+          @bench_price * (0.8 + (@article_score * article_weight) + (@grow_score * grow_weight))
         end
 
         def advice(advice_price)

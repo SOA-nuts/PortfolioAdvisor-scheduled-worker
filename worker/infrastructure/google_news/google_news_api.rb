@@ -30,8 +30,8 @@ module PortfolioAdvisor
 
           to = @today.strftime('%Y-%m-%d')
           from = updated_at.nil? ? (@today - 15).strftime('%Y-%m-%d') : to
-
-          "#{API_GOOGLE_NEWS_EVERYTHING}q=#{company}&from=#{from}&to=#{to}&pageSize=#{result_num}&language=en&sortBy=popularity"
+          excludeDomains = "makeuseof.com"
+          "#{API_GOOGLE_NEWS_EVERYTHING}q=#{company}&from=#{from}&to=#{to}&pageSize=#{result_num}&language=en&sortBy=popularity&excludeDomains=#{excludeDomains}"
         end
 
         def get(url)

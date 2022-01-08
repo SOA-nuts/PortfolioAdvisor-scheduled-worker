@@ -13,8 +13,7 @@ module PortfolioAdvisor
         end
   
         def self.find_rank
-          Database::RankOrm
-            .where(updated: Date.today - 1)
+          Database::RankOrm.last
         end
   
         def self.create(entity)
