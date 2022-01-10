@@ -1,0 +1,4 @@
+config/secrets.yml
+*.db
+.bundle/
+.rake_tasks~

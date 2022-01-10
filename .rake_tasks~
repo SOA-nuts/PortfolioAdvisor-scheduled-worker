@@ -1,0 +1,13 @@
+console
+db:drop
+db:migrate
+db:wipe
+docker:build
+docker:ps
+docker:rm
+docker:run
+heroku:push
+heroku:run
+queue:create
+queue:purge
+worker
