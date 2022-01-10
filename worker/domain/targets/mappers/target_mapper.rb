@@ -23,12 +23,13 @@ module PortfolioAdvisor
         DataMapper.new(company, data, company_symbol).build_entity
       end
 
-       # Extracts entity specific elements from data structure
-       class DataMapper
+      # Extracts entity specific elements from data structure
+      class DataMapper
         def initialize(company, data, company_symbol)
           @company_name = company
           @articles = ArticleMapper.new.load_several(data)
-          @finance_data = PortfolioAdvisor::YahooFinance::FinanceMapper.new(AddTargetWorker.config.YAHOO_TOKEN).find(company_symbol)
+          @finance_data = PortfolioAdvisor::YahooFinance::FinanceMapper.new(AddTargetWorker.config.YAHOO_TOKEN)
+            .find(company_symbol)
         end
 
         def build_entity
@@ -76,26 +77,18 @@ module PortfolioAdvisor
         end
 
         def advice(advice_price)
-          puts @company_name
-          puts "advice_price + #{advice_price.to_s}"
-          puts "market_price + #{market_price.to_s}"
-          percent =  market_price / advice_price
-          result = "bad"
+          percent = market_price / advice_price
           if percent < 0.85
-            result = 'excellent'
+            'excellent'
           elsif percent < 0.95
-            result = 'good'
+            'good'
           elsif percent < 1.05
-            result = 'fair'
+            'fair'
           elsif percent < 1.15
-            result = 'poor'
+            'poor'
           else
-            result = 'bad'
+            'bad'
           end
-          puts percent
-          puts result
-          puts "..."
-          result
         end
       end
     end

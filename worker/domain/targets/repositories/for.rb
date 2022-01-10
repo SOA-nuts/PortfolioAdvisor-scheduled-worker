@@ -9,7 +9,7 @@ module PortfolioAdvisor
     module For
       ENTITY_REPOSITORY = {
         Entity::Article => Articles,
-        Entity::Target  => Targets
+        Entity::Target => Targets
       }.freeze
 
       def self.klass(entity_klass)

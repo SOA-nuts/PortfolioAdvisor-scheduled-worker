@@ -17,10 +17,8 @@ module PortfolioAdvisor
     end
 
     def call
-      puts "update target start"
-      updateTarget
-      puts "update rank start"
-      @search_targets = Hash.new
+      update_target
+      @search_targets = {}
 
       @queue.poll do |search_request_json|
         search_request = Representer::SearchRequest
@@ -29,14 +27,8 @@ module PortfolioAdvisor
 
         ranking(search_request)
       end
-
-      unless @search_targets.empty?
-        popular = Service::Ranking.new.call(search_targets: @search_targets)
-        puts popular
-      end
     end
 
-    
     def ranking(search_request)
       target = search_request.company_name
       if @search_targets.member?(target)
@@ -46,21 +38,17 @@ module PortfolioAdvisor
       end
     end
 
-    def updateTarget
-      COMPANY_LIST[0].each do |index, target|
-        #target_request = Forms::NewTarget.new.call(index)
+    def update_target
+      puts 'update target start'
+      COMPANY_LIST[0].each do |index, _target|
+        # target_request = Forms::NewTarget.new.call(index)
         puts "#{index} start"
-        target_add = Service::AddTarget.new.call(company_name: index)
-        if target_add.failure?
-            puts "#{index} add error"
-        else
-            puts "#{index} success"
-        end
+        Service::AddTarget.new.call(company_name: index)
       end
-    rescue StandardError => error
-      puts [error.inspect, error.backtrace].flatten.join("\n")
-      updateTarget
+      puts 'update rank start'
+    rescue StandardError => e
+      puts [e.inspect, e.backtrace].flatten.join("\n")
+      update_target
     end
-
   end
 end

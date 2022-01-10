@@ -108,7 +108,7 @@ end
 
 namespace :queue do
   task :config do
-    require_relative 'config/environment.rb' # load config info
+    require_relative 'config/environment' # load config info
     require 'aws-sdk-sqs'
     @worker = PortfolioAdvisor::AddTargetWorker
     @config = @worker.config
@@ -130,9 +130,9 @@ namespace :queue do
     puts "  Name: #{@config.ADD_QUEUE}"
     puts "  Region: #{@config.AWS_REGION}"
     puts "  URL: #{q_url}"
-  rescue StandardError => error
-    puts "Error creating queue: #{error}"
-    puts error.backtrace
+  rescue StandardError => e
+    puts "Error creating queue: #{e}"
+    puts e.backtrace
   end
 
   desc 'Purge messages in SQS queue for Shoryuken'
@@ -140,7 +140,7 @@ namespace :queue do
     q_url = @sqs.get_queue_url(queue_name: @config.ADD_QUEUE).queue_url
     @sqs.purge_queue(queue_url: q_url)
     puts "Queue #{queue_name} purged"
-  rescue StandardError => error
-    puts "Error purging queue: #{error}"
+  rescue StandardError => e
+    puts "Error purging queue: #{e}"
   end
 end

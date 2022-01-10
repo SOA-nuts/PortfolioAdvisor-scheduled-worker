@@ -69,7 +69,8 @@ module PortfolioAdvisor
         end
 
         def update(target)
-          company = target.update(updated_at: @entity.updated_at)
+          company = target.update(updated_at: @entity.updated_at, long_term_advice: @entity.long_term_advice,
+                                mid_term_advice: @entity.mid_term_advice, short_term_advice: @entity.short_term_advice)
 
           @entity.articles.each do |article|
             target.add_article(Articles.db_find_or_create(article))
